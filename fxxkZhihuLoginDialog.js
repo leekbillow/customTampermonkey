@@ -6,6 +6,7 @@
 // @author       leekbillow
 // @match        https://www.zhihu.com/*
 // @grant        none
+// @updateURL    https://raw.githubusercontent.com/leekbillow/customTampermonkey/main/fxxkZhihuLoginDialog.js
 // ==/UserScript==
 
 (function() {
