@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         移除知乎登录弹窗
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  移除知乎的登录弹窗
 // @author       leekbillow
-// @match        https://www.zhihu.com/*
+// @match        https://*.zhihu.com/*
 // @grant        none
 // @updateURL    https://raw.githubusercontent.com/leekbillow/customTampermonkey/main/fxxkZhihuLoginDialog.js
 // ==/UserScript==
@@ -13,9 +13,8 @@
     'use strict';
 
     //添加限制样式
-    let style=document.createElement('style'),
-        styleId=`Tampermonkey${new Date()*1}`;
-    style.id=styleId;
+    let style=document.createElement('style');
+    style.classList.add('Tampermonkey');
     style.innerHTML=`
     .Modal-wrapper,
     .Modal-backdrop,
@@ -25,10 +24,7 @@
     }`;
     document.head.append(style);
     //取消首次自动弹出登录框,解除监听
-    let removeStyle=function()
-        {
-            document.querySelector('.AppHeader-login').onclick=()=>document.getElementById(styleId).remove();
-        },
+    let removeStyle=function(){style.remove();},
         targetNode = document.body,
         observerOptions=
         {
@@ -42,9 +38,12 @@
             {
                 observer.disconnect();
                 rubbishDialogClose.click();
-                setTimeout(removeStyle,200);
+                let loginButton=document.querySelector('.AppHeader-login');
+                loginButton && (loginButton.onclick=()=>removeStyle());
             }
             else return;
         });
     observer.observe(targetNode, observerOptions);
+    //3秒后移除监听
+    setTimeout(()=>(observer.disconnect(),removeStyle()),3000);
 })();
