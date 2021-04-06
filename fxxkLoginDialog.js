@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         移除知乎/CSDN登录弹窗
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.1
 // @description  移除知乎/CSDN登录弹窗二合一
 // @author       leekbillow
 // @match        https://*.zhihu.com/*
