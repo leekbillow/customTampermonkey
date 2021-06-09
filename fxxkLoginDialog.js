@@ -1,11 +1,12 @@
 // ==UserScript==
-// @name         移除知乎/CSDN登录弹窗
+// @name         屏蔽知乎/CSDN登录弹窗、简书抽奖框
 // @namespace    http://tampermonkey.net/
-// @version      1.2
-// @description  移除知乎/CSDN登录弹窗二合一
+// @version      1.3
+// @description  屏蔽知乎/CSDN登录弹窗、简书登录弹窗三合一
 // @author       leekbillow
 // @match        https://*.zhihu.com/*
 // @match        https://*.blog.csdn.net/*
+// @match        https://*.jianshu.com/*
 // @grant        none
 // @updateURL    https://raw.githubusercontent.com/leekbillow/customTampermonkey/main/fxxkLoginDialog.js
 // ==/UserScript==
@@ -69,5 +70,24 @@
             setTimeout(()=>(observer.disconnect(),removeStyle()),3000);
             break;
         }
+        case /\bjianshu\.com\b(?!\.)/.test(location.hostname):
+        {
+            // 简书
+            let jianshuStyle=document.createElement('style');
+            jianshuStyle.classList.add('Tampermonkey');
+            jianshuStyle.innerHTML=`
+            ._1aCo37-mask,
+            ._1aCo37-wrap
+            {
+                display:none!important
+            }
+            body
+            {
+                overflow:auto!important
+            }`;
+            document.head.append(jianshuStyle);
+            break;
+        }
+        default:break;
     }
 })();
