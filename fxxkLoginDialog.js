@@ -23,12 +23,17 @@
             let csdnStyle=document.createElement('style');
             csdnStyle.classList.add('Tampermonkey');
             csdnStyle.innerHTML=`
-            .login-mark,
-            #passportbox,
-            .toolbar-advert
-            {
-                display:none!important
-            }`;
+              .login-mark,
+              #passportbox,
+              .toolbar-advert
+              {
+                  display:none!important
+              }
+              code
+              {
+                user-select:text!important;
+              }
+            `;
             document.head.append(csdnStyle);
             break;
         }
@@ -39,12 +44,13 @@
             let bhuStyle=document.createElement('style');
             bhuStyle.classList.add('Tampermonkey');
             bhuStyle.innerHTML=`
-            .Modal-wrapper,
-            .Modal-backdrop,
-            .signFlowModal
-            {
-                display:none!important;
-            }`;
+              .Modal-wrapper,
+              .Modal-backdrop,
+              .signFlowModal
+              {
+                  display:none!important;
+              }
+            `;
             document.head.append(bhuStyle);
             //取消首次自动弹出登录框,解除监听
             let removeStyle=function(){bhuStyle.remove();},
@@ -77,15 +83,16 @@
             let jianshuStyle=document.createElement('style');
             jianshuStyle.classList.add('Tampermonkey');
             jianshuStyle.innerHTML=`
-            ._1aCo37-mask,
-            ._1aCo37-wrap
-            {
-                display:none!important
-            }
-            body
-            {
-                overflow:auto!important
-            }`;
+              ._1aCo37-mask,
+              ._1aCo37-wrap
+              {
+                  display:none!important
+              }
+              body
+              {
+                  overflow:auto!important
+              }
+            `;
             document.head.append(jianshuStyle);
             break;
         }
@@ -95,10 +102,11 @@
             let juejinStyle=document.createElement('style');
             juejinStyle.classList.add('Tampermonkey');
             juejinStyle.innerHTML=`
-            .extension
-            {
-                display:none!important
-            }`;
+              .extension
+              {
+                  display:none!important
+              }
+            `;
             document.head.append(juejinStyle);
             break;
         }
