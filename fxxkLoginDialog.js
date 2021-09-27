@@ -23,7 +23,7 @@
             let csdnStyle=document.createElement('style');
             csdnStyle.classList.add('Tampermonkey');
             csdnStyle.innerHTML=`
-              .login-mark,
+              .passport-login-container,
               #passportbox,
               .toolbar-advert
               {
