@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         屏蔽骚扰(知乎/CSDN/简书/掘金)
 // @namespace    http://tampermonkey.net/
-// @version      1.6.1
+// @version      1.6.2
 // @description  屏蔽(知乎：登录弹窗；CSDN：登录弹窗、登录复制；简书：抽奖弹窗；掘金：底部插件下载)
 // @author       leekbillow
 // @match        https://*.zhihu.com/*
