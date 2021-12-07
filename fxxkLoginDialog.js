@@ -33,7 +33,7 @@
               {
                 user-select:text!important;
               }
-              [data-title="登录后复制"]
+              .hljs-button
               {
                 display:none!important;
               }
@@ -56,7 +56,9 @@
               }
             `;
             document.head.append(bhuStyle);
-            //取消首次自动弹出登录框,解除监听
+            // 弹窗数量，专栏为2
+            let rubbishDialogQuantity=1+/\bzhuanlan\.zhihu\.com\b(?!\.)/.test(location.hostname),clicked=[];
+            // 取消首次自动弹出登录框,解除监听
             let removeStyle=function(){bhuStyle.remove();},
                 targetNode = document.body,
                 observerOptions=
@@ -66,13 +68,21 @@
                 },
                 observer = new MutationObserver(function(mutationList,observer)
                 {
-                    let rubbishDialogClose=document.querySelector('.Modal-closeButton');
-                    if(rubbishDialogClose)
+                    let rubbishDialogCloseButtons=document.querySelectorAll('.Modal-closeButton');
+                    if(rubbishDialogCloseButtons.length>0)
                     {
-                        observer.disconnect();
-                        rubbishDialogClose.click();
-                        let loginButton=document.querySelector('.AppHeader-login');
-                        loginButton && (loginButton.onclick=()=>removeStyle());
+                        [].forEach.call(rubbishDialogCloseButtons,E=>
+                        {
+                          if(clicked.includes(E)) return;
+                          E.click();
+                          clicked.push(E);
+                          if(--rubbishDialogQuantity<1)
+                          {
+                            observer.disconnect();
+                            let loginButton=document.querySelector('.AppHeader-login');
+                            loginButton && (loginButton.onclick=()=>removeStyle());
+                          }
+                        });
                     }
                     else return;
                 });
