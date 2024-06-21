@@ -8,7 +8,7 @@
 // @match        https://*.blog.csdn.net/*
 // @match        https://*.jianshu.com/*
 // @match        https://*.juejin.cn/*
-// @grant        none
+// @grant        GM_xmlhttpRequest
 // @updateURL    https://raw.githubusercontent.com/leekbillow/customTampermonkey/main/fxxkLoginDialog.js
 // ==/UserScript==
 
@@ -41,8 +41,7 @@
     }
     case /\bzhihu\.com\b(?!\.)/.test(location.hostname): {
       // 知乎
-        debugger;
-        //添加限制样式
+      //添加限制样式
       let bhuStyle = document.createElement("style");
       bhuStyle.classList.add("Tampermonkey");
       bhuStyle.innerHTML = `
@@ -69,6 +68,7 @@
         observer = new MutationObserver(function (mutationList, observer) {
           let rubbishDialogCloseButtons = document.querySelectorAll(".Modal-closeButton");
           if (rubbishDialogCloseButtons.length > 0) {
+            // 关闭弹窗
             [].forEach.call(rubbishDialogCloseButtons, (E) => {
               if (clicked.includes(E)) return;
               E.click();
@@ -78,6 +78,42 @@
                 let loginButton = document.querySelector(".AppHeader-login");
                 loginButton && (loginButton.onclick = () => removeStyle());
               }
+            });
+            // 添加查看回答按钮
+            const extendxButtons = document.querySelectorAll(".Button.ContentItem-rightButton.ContentItem-expandButton");
+            [].forEach.call(extendxButtons, (E) => {
+              const url = E.parentElement.parentElement.querySelector('.ContentItem.AnswerItem>[itemprop="url"]').getAttribute("content"),
+                answerId = url.split("/").pop(),
+                directViewButton = E.cloneNode();
+              directViewButton.innerHTML = "我™要看回答";
+              directViewButton.setAttribute("style", "bottom: 35px");
+              directViewButton.onclick = async () => {
+                try {
+                  const { responseText } = await GM.xmlHttpRequest({
+                      method: "get",
+                      url: `https://www.zhihu.com/appview/v2/answer/${answerId}?native=0&omni=1&sds=2&X-AD=canvas_version%3Av%3D5.1%3Bsetting%3Acad%3D0&seg_like_open=0`,
+                    }),
+                    newWindow = window.open("", answerId, "popup,width=850,height=1000,left=200,top=200"),
+                    content = responseText,
+                    document = newWindow.document;
+                  document.open();
+                  document.write(content);
+                  document.close();
+                  newWindow.onload = () => {
+                    const imgs = document.querySelectorAll("[data-actualsrc]"),
+                      scripts = document.querySelectorAll("script"),
+                      norequiredSelector = [".css-199kefw", ".css-i8ps43", ".css-1gcwqws", ".css-1yuc9s4", ".AnswerToolbar-wrapper"];
+                    [].forEach.call(imgs ?? [], (img) => {
+                      img.setAttribute("src", img.getAttribute("data-actualsrc"));
+                    });
+                    [].forEach.call(scripts ?? [], (script) => script.remove());
+                    norequiredSelector.forEach((selector) => document.querySelector(selector)?.remove());
+                  };
+                } catch (err) {
+                  console.log(err);
+                }
+              };
+              E.insertAdjacentElement("afterend", directViewButton);
             });
           } else return;
         });
