@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         屏蔽骚扰(知乎/CSDN/简书/掘金)
+// @name         页面小优化(知乎/CSDN/简书)
 // @namespace    http://tampermonkey.net/
 // @version      2.0.0
 // @description  屏蔽(知乎：登录弹窗；CSDN：登录弹窗、登录复制；简书：抽奖弹窗；掘金：底部插件下载)
