@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         页面小优化(知乎/CSDN/简书)
+// @icon         https://avatars.githubusercontent.com/u/43409097?v=4
 // @namespace    http://tampermonkey.net/
 // @version      2.0.0
 // @description  (知乎：登录弹窗、未登录查看回答；CSDN：登录弹窗、登录复制；简书：登录弹窗；)
 // @author       leekbillow
+// @homepage     https://github.com/leekbillow/customTampermonkey
 // @match        https://*.zhihu.com/*
 // @match        https://*.blog.csdn.net/*
 // @match        https://*.jianshu.com/*
