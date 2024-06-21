@@ -8,6 +8,7 @@
 // @match        https://*.blog.csdn.net/*
 // @match        https://*.jianshu.com/*
 // @grant        GM_addStyle
+// @grant        GM_setClipboard
 // @grant        GM_xmlhttpRequest
 // @updateURL    https://raw.githubusercontent.com/leekbillow/customTampermonkey/main/fxxkLoginDialog.js
 // ==/UserScript==
@@ -18,25 +19,24 @@
   switch (true) {
     case /\bblog\.csdn\.net\b(?!\.)/.test(location.hostname): {
       // CSDN
-      let csdnStyle = document.createElement("style");
-      csdnStyle.classList.add("Tampermonkey");
-      csdnStyle.innerHTML = `
-              .passport-login-container,
-              #passportbox,
-              .toolbar-advert
-              {
-                  display:none!important
-              }
-              code
-              {
-                user-select:text!important;
-              }
-              .hljs-button
-              {
-                display:none!important;
-              }
-            `;
-      document.head.append(csdnStyle);
+      GM_addStyle(`
+        .passport-login-container,
+        #passportbox
+        {
+            display:none!important
+        }
+        code
+        {
+          user-select:text!important;
+        }
+        .hljs-button
+        {
+          display:none!important;
+        }
+      `);
+      document.body.querySelector("#content_views").oncopy = function () {
+        GM_setClipboard(getSelection().toString());
+      };
       break;
     }
     case /\bzhihu\.com\b(?!\.)/.test(location.hostname): {
