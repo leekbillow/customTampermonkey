@@ -7,7 +7,6 @@
 // @match        https://*.zhihu.com/*
 // @match        https://*.blog.csdn.net/*
 // @match        https://*.jianshu.com/*
-// @match        https://*.juejin.cn/*
 // @grant        GM_addStyle
 // @grant        GM_xmlhttpRequest
 // @updateURL    https://raw.githubusercontent.com/leekbillow/customTampermonkey/main/fxxkLoginDialog.js
@@ -135,19 +134,6 @@
             overflow:auto!important
         }
       `);
-      break;
-    }
-    case /\bjuejin\.cn\b(?!\.)/.test(location.hostname): {
-      // 掘金
-      let juejinStyle = document.createElement("style");
-      juejinStyle.classList.add("Tampermonkey");
-      juejinStyle.innerHTML = `
-              .extension
-              {
-                  display:none!important
-              }
-            `;
-      document.head.append(juejinStyle);
       break;
     }
     default:
