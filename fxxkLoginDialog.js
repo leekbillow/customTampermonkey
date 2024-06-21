@@ -42,17 +42,14 @@
     case /\bzhihu\.com\b(?!\.)/.test(location.hostname): {
       // 知乎
       //添加限制样式
-      let bhuStyle = document.createElement("style");
-      bhuStyle.classList.add("Tampermonkey");
-      bhuStyle.innerHTML = `
-              .Modal-wrapper,
-              .Modal-backdrop,
-              .signFlowModal
-              {
-                  display:none!important;
-              }
-            `;
-      document.head.append(bhuStyle);
+      let bhuStyle = GM_addStyle(`
+        .Modal-wrapper,
+        .Modal-backdrop,
+        .signFlowModal
+        {
+            display:none!important;
+        }
+      `);
       // 弹窗数量，专栏为2
       let rubbishDialogQuantity = 1 + /\bzhuanlan\.zhihu\.com\b(?!\.)/.test(location.hostname),
         clicked = [];
@@ -69,7 +66,7 @@
           let rubbishDialogCloseButtons = document.querySelectorAll(".Modal-closeButton");
           if (rubbishDialogCloseButtons.length > 0) {
             // 关闭弹窗
-            [].forEach.call(rubbishDialogCloseButtons, (E) => {
+            rubbishDialogCloseButtons.forEach((E) => {
               if (clicked.includes(E)) return;
               E.click();
               clicked.push(E);
@@ -81,7 +78,7 @@
             });
             // 添加查看回答按钮
             const extendxButtons = document.querySelectorAll(".Button.ContentItem-rightButton.ContentItem-expandButton");
-            [].forEach.call(extendxButtons, (E) => {
+            extendxButtons.forEach((E) => {
               const url = E.parentElement.parentElement.querySelector('.ContentItem.AnswerItem>[itemprop="url"]').getAttribute("content"),
                 answerId = url.split("/").pop(),
                 directViewButton = E.cloneNode();
@@ -103,10 +100,10 @@
                     const imgs = document.querySelectorAll("[data-actualsrc]"),
                       scripts = document.querySelectorAll("script"),
                       norequiredSelector = [".css-199kefw", ".css-i8ps43", ".css-1gcwqws", ".css-1yuc9s4", ".AnswerToolbar-wrapper"];
-                    [].forEach.call(imgs ?? [], (img) => {
+                    imgs.forEach((img) => {
                       img.setAttribute("src", img.getAttribute("data-actualsrc"));
                     });
-                    [].forEach.call(scripts ?? [], (script) => script.remove());
+                    scripts.forEach((script) => script.remove());
                     norequiredSelector.forEach((selector) => document.querySelector(selector)?.remove());
                   };
                 } catch (err) {
