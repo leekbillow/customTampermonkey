@@ -8,6 +8,7 @@
 // @match        https://*.blog.csdn.net/*
 // @match        https://*.jianshu.com/*
 // @match        https://*.juejin.cn/*
+// @grant        GM_addStyle
 // @grant        GM_xmlhttpRequest
 // @updateURL    https://raw.githubusercontent.com/leekbillow/customTampermonkey/main/fxxkLoginDialog.js
 // ==/UserScript==
@@ -124,20 +125,16 @@
     }
     case /\bjianshu\.com\b(?!\.)/.test(location.hostname): {
       // 简书
-      let jianshuStyle = document.createElement("style");
-      jianshuStyle.classList.add("Tampermonkey");
-      jianshuStyle.innerHTML = `
-              ._1aCo37-mask,
-              ._1aCo37-wrap
-              {
-                  display:none!important
-              }
-              body
-              {
-                  overflow:auto!important
-              }
-            `;
-      document.head.append(jianshuStyle);
+      GM_addStyle(`
+        body>div:last-child
+        {
+          display:none!important
+        }
+        body
+        {
+            overflow:auto!important
+        }
+      `);
       break;
     }
     case /\bjuejin\.cn\b(?!\.)/.test(location.hostname): {
