@@ -107,6 +107,7 @@
                     });
                     scripts.forEach((script) => script.remove());
                     norequiredSelector.forEach((selector) => document.querySelector(selector)?.remove());
+                    document.querySelector(".AnswerPage-content").style = "user-select:text";
                   };
                 } catch (err) {
                   console.log(err);
