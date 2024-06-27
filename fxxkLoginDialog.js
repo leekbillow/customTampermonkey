@@ -12,7 +12,7 @@
 // @grant        GM_addStyle
 // @grant        GM_setClipboard
 // @grant        GM_xmlhttpRequest
-// @updateURL    https://raw.githubusercontent.com/leekbillow/customTampermonkey/main/fxxkLoginDialog.js
+// @run-at       document-end
 // ==/UserScript==
 
 (function () {
