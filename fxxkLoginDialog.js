@@ -90,7 +90,7 @@
                 try {
                   const { responseText } = await GM.xmlHttpRequest({
                       method: "get",
-                      url: `https://www.zhihu.com/appview/v2/answer/${answerId}?native=0&omni=1&sds=2&X-AD=canvas_version%3Av%3D5.1%3Bsetting%3Acad%3D0&seg_like_open=0`,
+                      url: `https://www.zhihu.com/appview/v2/answer/${answerId}`,
                     }),
                     newWindow = window.open("", answerId, "popup,width=850,height=1000,left=200,top=200"),
                     content = responseText,
