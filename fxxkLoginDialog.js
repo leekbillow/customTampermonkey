@@ -3,7 +3,7 @@
 // @icon         https://avatars.githubusercontent.com/u/43409097?v=4
 // @namespace    http://tampermonkey.net/
 // @version      2.0.0
-// @description  (知乎：登录弹窗、未登录查看回答；CSDN：登录弹窗、登录复制；简书：登录弹窗；)
+// @description  (知乎：移除登录弹窗、免登录查看回答；CSDN：移除登录弹窗、免登录复制；简书：移除登录弹窗；)
 // @author       leekbillow
 // @homepage     https://github.com/leekbillow/customTampermonkey
 // @match        https://*.zhihu.com/*
