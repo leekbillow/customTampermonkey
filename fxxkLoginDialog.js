@@ -2,7 +2,7 @@
 // @name         页面小优化(知乎/CSDN/简书)
 // @icon         https://avatars.githubusercontent.com/u/43409097?v=4
 // @namespace    http://tampermonkey.net/
-// @version      2.0.0
+// @version      2.1.0
 // @description  (知乎：移除登录弹窗、免登录查看回答；CSDN：移除登录弹窗、免登录复制；简书：移除登录弹窗；)
 // @author       leekbillow
 // @homepage     https://github.com/leekbillow/customTampermonkey
