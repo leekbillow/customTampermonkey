@@ -43,6 +43,8 @@
     }
     case /\bzhihu\.com\b(?!\.)/.test(location.hostname): {
       // 知乎
+      // 不移除搜索结果
+      if (location.pathname === "/search") document.querySelector(".List").removeChild = () => null;
       //添加限制样式
       let bhuStyle = GM_addStyle(`
         .Modal-wrapper,
@@ -95,6 +97,7 @@
                     newWindow = window.open("", answerId, "popup,width=850,height=1000,left=200,top=200"),
                     content = responseText,
                     document = newWindow.document;
+                  newWindow.sandbox = "allow-same-origin";
                   document.open();
                   document.write(content);
                   document.close();
