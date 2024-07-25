@@ -45,6 +45,14 @@
       // 知乎
       // 不移除搜索结果
       if (location.pathname === "/search") document.querySelector(".List").removeChild = () => null;
+      // 移除登录tooltip
+      GM_addStyle(`
+        .css-1wq6v87,
+        .css-yoby3j
+        {
+          display:none!important;
+        }
+      `);
       //添加限制样式
       let bhuStyle = GM_addStyle(`
         .Modal-wrapper,
