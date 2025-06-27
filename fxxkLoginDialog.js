@@ -2,8 +2,8 @@
 // @name         页面小优化(知乎/CSDN/简书)
 // @icon         https://avatars.githubusercontent.com/u/43409097?v=4
 // @namespace    http://tampermonkey.net/
-// @version      2.1.0
-// @description  (知乎：移除登录弹窗、免登录查看回答；CSDN：移除登录弹窗、免登录复制；简书：移除登录弹窗；)
+// @version      2.1.1
+// @description  (知乎：移除登录弹窗；CSDN：移除登录弹窗、免登录复制；简书：移除登录弹窗；)
 // @author       leekbillow
 // @homepage     https://github.com/leekbillow/customTampermonkey
 // @match        https://*.zhihu.com/*
@@ -87,44 +87,6 @@
                 let loginButton = document.querySelector(".AppHeader-login");
                 loginButton && (loginButton.onclick = () => removeStyle());
               }
-            });
-            // 添加查看回答按钮
-            const extendxButtons = document.querySelectorAll(".Button.ContentItem-rightButton.ContentItem-expandButton");
-            extendxButtons.forEach((E) => {
-              const url = E.parentElement.parentElement.querySelector('.ContentItem.AnswerItem>[itemprop="url"]').getAttribute("content"),
-                answerId = url.split("/").pop(),
-                directViewButton = E.cloneNode();
-              directViewButton.innerHTML = "我™要看回答";
-              directViewButton.setAttribute("style", "bottom: 35px");
-              directViewButton.onclick = async () => {
-                try {
-                  const { responseText } = await GM.xmlHttpRequest({
-                      method: "get",
-                      url: `https://www.zhihu.com/appview/v2/answer/${answerId}?native=0&omni=1&sds=2&X-AD=canvas_version%3Av%3D5.1%3Bsetting%3Acad%3D0&seg_like_open=0`,
-                    }),
-                    newWindow = window.open("", answerId, "popup,width=850,height=1000,left=200,top=200"),
-                    content = responseText,
-                    document = newWindow.document;
-                  newWindow.sandbox = "allow-same-origin";
-                  document.open();
-                  document.write(content);
-                  document.close();
-                  newWindow.onload = () => {
-                    const imgs = document.querySelectorAll("[data-actualsrc]"),
-                      scripts = document.querySelectorAll("script"),
-                      norequiredSelector = [".css-199kefw", ".css-i8ps43", ".css-1gcwqws", ".css-1yuc9s4", ".AnswerToolbar-wrapper"];
-                    imgs.forEach((img) => {
-                      img.setAttribute("src", img.getAttribute("data-actualsrc"));
-                    });
-                    scripts.forEach((script) => script.remove());
-                    norequiredSelector.forEach((selector) => document.querySelector(selector)?.remove());
-                    document.querySelector(".AnswerPage-content").style = "user-select:text";
-                  };
-                } catch (err) {
-                  console.log(err);
-                }
-              };
-              E.insertAdjacentElement("afterend", directViewButton);
             });
           } else return;
         });
