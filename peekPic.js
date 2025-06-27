@@ -2,7 +2,7 @@
 // @name         无图模式
 // @icon         https://avatars.githubusercontent.com/u/43409097?v=4
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.1.0
 // @description  无图模式，鼠标悬浮后显示图片
 // @author       leekbillow
 // @homepage     https://github.com/leekbillow/customTampermonkey
@@ -20,12 +20,12 @@
 
   let imgStyle = null;
   function apply() {
-    const delay = GM_getValue('delay') || 0;
+    const { delay, opacity } = GM_getValues({ delay: 0, opacity: 0 });
     imgStyle?.remove();
     imgStyle = GM_addStyle(`
       img {
         filter: blur(5px) !important;
-        opacity: 0.1 !important;
+        opacity: ${opacity / 100} !important;
         transition:
           filter 0.5s 0s ease-in-out,
           opacity 0.5s 0s ease-in-out !important;
@@ -46,10 +46,11 @@
   }
 
   function openConfigForm() {
-    const { enabled, delay } = GM_getValues({ enabled: '', delay: 1000 });
+    const { enabled, delay, opacity } = GM_getValues({ enabled: 'false', delay: 1000, opacity: 15 });
     const inputs = [
-      { type: 'checkbox', name: 'enabled', label: '默认启用', value: 'true', checked: enabled === 'true', },
-      { type: 'range', name: 'delay', label: '显示延迟(ms)', value: delay || 0, min: 0, max: 3000, step: 100 },
+      { type: 'select', name: 'enabled', label: '默认启用', options: [{ value: 'true', text: '启用' }, { value: 'false', text: '禁用' }], },
+      { type: 'range', name: 'delay', label: '显示延迟', value: delay || 0, min: 0, max: 3000, step: 100 },
+      { type: 'range', name: 'opacity', label: '可见度', value: opacity || 0, min: 0, max: 100, step: 1 },
     ]
 
     const form = document.createElement('form');
@@ -69,7 +70,7 @@
       <label>${input.label}：</label>
       ${input.type === 'select'
           ? `<select name="${input.name}">
-            ${input.options.map(opt => `<option value="${opt.value}">${opt.text}</option>`).join('')}
+            ${input.options.map(opt => `<option value="${opt.value}" ${enabled === opt.value ? 'selected' : ''}>${opt.text}</option>`).join('')}
           </select>`
           : `<input ${Object.entries(input).map(([k, v]) => `${k}="${v}"`).join(' ')}>`
         }
@@ -85,17 +86,25 @@
       const formData = new FormData(form);
       const config = Object.fromEntries(formData.entries());
       GM_setValues(config)
-      form.remove();
       cancel();
-      if (config.enabled) apply();
+      if (config.enabled === 'true') apply();
     };
-    form.appendChild(saveBtn);
 
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.textContent = '关闭';
+    closeBtn.onclick = (e) => {
+      e.preventDefault();
+      form.remove();
+    };
+
+    form.appendChild(saveBtn);
+    form.appendChild(closeBtn);
     document.body.appendChild(form);
   }
 
   const enabled = GM_getValue('enabled');
-  if (enabled) apply();
+  if (enabled === 'true') apply();
 
   GM_registerMenuCommand("临时启用", apply);
   GM_registerMenuCommand("临时禁用", cancel);
